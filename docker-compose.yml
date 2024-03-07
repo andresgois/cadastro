@@ -1,0 +1,19 @@
+version: '3.1'
+
+services:
+  postgres:
+    image: postgres:12.11
+    container_name: cadastro-db
+    volumes:
+      - ./script.sql:/docker-entrypoint-initdb.d/script.sql
+    environment:
+      #POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 123456
+      POSTGRES_DB: cadpessoas
+      #POSTGRES_INITDB_ARGS: "--auth-host=scram-sha-256"
+    ports:
+      - 5432:5432
+    command:
+      - "postgres"
+      - "-c"
+      - "wal_level=logical"
