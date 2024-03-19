@@ -9,15 +9,17 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import io.github.andregois.cad.model.Cep;
 import io.github.andregois.cad.model.Endereco;
 import io.github.andregois.cad.model.Pessoa;
-import io.github.andregois.cad.repository.EnderecoRepository;
 import io.github.andregois.cad.repository.PessoaRepository;
+import io.github.andregois.cad.service.ViaCepService;
 
 @Named
 @ViewScoped
 public class PessoaBean implements Serializable{
 
+	
 	private static final long serialVersionUID = 1L;
 	private Pessoa pessoa = null;
 	private Endereco endereco = null;
@@ -27,8 +29,10 @@ public class PessoaBean implements Serializable{
 	
 	@Inject
 	private PessoaRepository repository;
+	//@Inject
+	//private EnderecoRepository enderecoRepository;
 	@Inject
-	private EnderecoRepository enderecoRepository;
+	private EnderecoBean enderecoBean;
 	
 	@Inject
 	FacesContext context;
@@ -41,11 +45,9 @@ public class PessoaBean implements Serializable{
 	}
 
 	public void cadastrar() {
-		System.out.println("Nome: "+this.pessoa.getNome());
-		System.out.println(endereco.getCidade());
-		enderecoRepository.salvar(endereco);
-		
-		System.out.println(endereco.getId());
+		//enderecoRepository.salvar(endereco);
+		enderecoBean.salvar(endereco);
+
 		this.pessoa.setEndereco(endereco);
 		this.repository.salvar(getPessoa());
 		this.pessoa = new Pessoa();
@@ -60,12 +62,17 @@ public class PessoaBean implements Serializable{
 		return null;
 	}
 	
+	public void buscarCep(String cep) {
+		System.out.println(cep);
+		Cep request = ViaCepService.consultaCep(cep);
+		enderecoBean.montarCepPorServico(request, this.endereco);
+	}
+	
 	public void deletar() {
 		this.repository.deletar(pessoaSelecionada);
 	}
 	
 	public void editar() {
-		System.out.println("TESTE");
 		this.repository.editar(pessoaSelecionada);
 	}
 

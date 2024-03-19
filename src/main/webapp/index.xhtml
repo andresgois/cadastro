@@ -33,13 +33,14 @@
 	                     <f:validateLength maximum="2" />
 	                     <f:ajax event="blur" render="messages" />
 	                 </p:inputText>
-	                 <p:inputText id="sexo" value="#{pessoaBean.pessoa.sexo}" required="true" 
-	                 	requiredMessage="Sexo obrigatório" validatorMessage="Sexo é obrigatório">
-	                     <f:validateLength maximum="2" />
-	                 	<p:outputLabel value="Sexo:" for="sexo" />
-	                     <f:ajax event="blur" render="messages" />
-	                 </p:inputText>
-	                 
+				    
+					<p:selectOneMenu value="#{pessoaBean.pessoa.sexo}" id="sexo">
+				    <p:outputLabel value="Sexo:" for="sexo" />
+				    <h:outputText value="Sexo:" id="idSexo"/>
+						<f:selectItem itemLabel="--Selecione--" itemValue="" noSelectionOption="true" />
+						<f:selectItems value="#{pessoaBean.pessoa.sexoEnumValues}" var="sexo"
+							itemValue="#{sexo}" itemLabel="#{sexo.descricao}" />
+					</p:selectOneMenu>
 	                 
 	                 <p:inputText id="estado" value="#{pessoaBean.endereco.estado}" required="true" 
 	                 	requiredMessage="Estado obrigatório" validatorMessage="Estado não pode ser nulo">
@@ -62,9 +63,9 @@
 	                     <f:ajax event="blur" render="messages" />
 	                 </p:inputText>
 	                 <p:inputMask id="cep" value="#{pessoaBean.endereco.cep}" required="true" 
-	                 	requiredMessage="CEP obrigatório" validatorMessage="CEP não pode ser nulo" mask="#{'9999-999'}">
+	                 	requiredMessage="CEP obrigatório" validatorMessage="CEP não pode ser nulo" mask="#{'99999-999'}">
 	                 	<p:outputLabel value="CEP" for="cep" />
-	                     <f:ajax event="blur" render="messages" />
+	                     <f:ajax event="blur" render="messages, panelCadastro" listener="#{pessoaBean.buscarCep(pessoaBean.endereco.cep)}" />
 	                 </p:inputMask>
 					</p:panelGrid>
 						

@@ -1,29 +1,41 @@
 version: '3.7'
 
 services:
-  postgres:
+  db:
     image: postgres:12.11
     container_name: cadastro-db
     volumes:
       - ./script.sql:/docker-entrypoint-initdb.d/script.sql
     environment:
-      #POSTGRES_USER: postgres
+      TZ: America/Sao_Paulo
+      POSTGRES_USER: postgres
       POSTGRES_PASSWORD: 123456
       POSTGRES_DB: cadpessoas
-      #POSTGRES_INITDB_ARGS: "--auth-host=scram-sha-256"
+      POSTGRES_INITDB_ARGS: "--auth-host=scram-sha-256"
     ports:
       - 5432:5432
     command:
       - 'postgres'
       - '-c'
       - 'wal_level=logical'
-  server:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: widfly20
-    ports:
-      - 8080:8080
-      - 9990:9990
-    depends_on:
-      - postgres
+    networks:
+      - cadnet
+#  server:
+#    environment:
+#      POSTGRES_CONNECTION: jdbc:postgresql://localhost:5432/cadpessoas
+#      USER: postgres
+#      PASS: 123456
+#    build:
+#      context: .
+#      dockerfile: Dockerfile
+#    container_name: widfly20
+#    ports:
+#      - 8080:8080
+#      - 9990:9990
+#    depends_on:
+#      - db
+#    networks:
+#      - cadnet
+networks:
+  cadnet:
+    driver: bridge
