@@ -2,8 +2,11 @@ package io.github.andregois.cad.bean;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
+import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
@@ -20,13 +23,15 @@ import io.github.andregois.cad.service.ViaCepService;
 public class PessoaBean implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
+	private static final Logger LOGGER = Logger.getLogger(PessoaBean.class.getName());
+
 	private Pessoa pessoa = null;
 	private Endereco endereco = null;
 	private Long idDoBotao;
 	private Pessoa pessoaSelecionada;
 	List<Pessoa> pessoas;
 	
-	@Inject
+	@EJB
 	private PessoaRepository repository;
 
 	@Inject
@@ -58,9 +63,15 @@ public class PessoaBean implements Serializable{
 	}
 	
 	public void buscarCep(String cep) {
-		System.out.println(cep);
-		Cep request = ViaCepService.consultaCep(cep);
-		enderecoBean.montarCepPorServico(request, this.endereco);
+		Cep request;
+		try {
+			request = ViaCepService.consultaCep(cep);
+			enderecoBean.montarCepPorServico(request, this.endereco);
+		} catch (Exception e) {
+			LOGGER.warning(e.getMessage());
+			FacesMessage mensagem = new FacesMessage(FacesMessage.SEVERITY_WARN, "Error", "CEP não encontrado "+cep);
+	        context.addMessage( null, mensagem);
+		}		
 	}
 	
 	public void deletar() {

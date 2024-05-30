@@ -25,13 +25,6 @@ public class EnderecoBean implements Serializable{
 	public void init() {
 		this.setEndereco(new Endereco());
 	}
-	
-	public void montarCepPorServico(Cep cep) {
-		this.getEndereco().setCep(cep.getCep().replace("-", ""));
-		this.getEndereco().setCidade(cep.getLocalidade());
-		this.getEndereco().setEstado(cep.getUf());
-		this.getEndereco().setLogradouro(cep.getLogradouro());
-	}
 
 	public Endereco getEndereco() {
 		return endereco;

@@ -1,12 +1,8 @@
 package io.github.andregois.cad.service;
 
-import java.io.IOException;
-
 import javax.ejb.Stateless;
 
 import org.apache.http.HttpResponse;
-import org.apache.http.ParseException;
-import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.HttpClients;
@@ -27,14 +23,8 @@ public class ViaCepService {
 
 			String responseBody = EntityUtils.toString(response.getEntity());
 			cepRequest = CepMapper.mapFromJson(responseBody, Cep.class);
-		} catch (ClientProtocolException e) {
-			e.printStackTrace();
-		} catch (ParseException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}catch (Exception e) {
-			e.printStackTrace();
+		} catch (Exception e) {
+			System.out.println("Error: "+e.getMessage());
 		}
 		return cepRequest;
 	}
