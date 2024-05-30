@@ -28,7 +28,8 @@ public class Pessoa implements Serializable{
 	private Long id;
 	private String nome;
 	private Integer idade;
-	@Column(length = 1)
+	//@Column(length = 1)
+	@Column(name = "sexo")
 	@Enumerated(EnumType.STRING)
 	private SexoEnum sexo;
 	

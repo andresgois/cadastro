@@ -9,7 +9,6 @@ public enum SexoEnum {
 	private String descricao;
 
 	SexoEnum(String codigo, String descricao) {
-		System.out.println(codigo +" - "+descricao);
 		this.codigo = codigo;
 		this.descricao = descricao;
 	}

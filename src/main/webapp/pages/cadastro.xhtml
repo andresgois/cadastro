@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+	<ui:composition template="/index.xhtml">
+		<ui:define name="conteudo">
+			<h:form>
+				<p:messages id="messages" showDetail="true" showSummary="false"
+					autoUpdate="true" closable="true" />
+				<p:fieldset class="">
+					<legend>Cadastro</legend>
+
+					<h:panelGroup id="panelCadastro">
+						<div class="ui-grid-col-2">
+							<p:panelGrid columns="3">
+								<p:inputText id="nome" value="#{pessoaBean.pessoa.nome}"
+									required="true" requiredMessage="Nome obrigatório"
+									validatorMessage="Nome é obrigatório">
+									<p:outputLabel value="Nome" for="nome" />
+									<f:ajax event="blur" render="messages" />
+								</p:inputText>
+								<p:inputText id="idade" value="#{pessoaBean.pessoa.idade}"
+									required="true" requiredMessage="Idade obrigatório"
+									validatorMessage="Idade é obrigatório">
+									<p:outputLabel value="Idade:" for="idade" />
+									<f:validateLength maximum="2" />
+									<f:ajax event="blur" render="messages" />
+								</p:inputText>
+
+								<p:selectOneMenu value="#{pessoaBean.pessoa.sexo}" id="sexo">
+									<p:outputLabel value="Sexo:" for="sexo" />
+									<h:outputText value="Sexo:" id="idSexo" />
+									<f:selectItem itemLabel="--Selecione--" itemValue=""
+										noSelectionOption="true" />
+									<f:selectItems value="#{pessoaBean.pessoa.sexoEnumValues}"
+										var="sexo" itemValue="#{sexo}" itemLabel="#{sexo.descricao}" />
+								</p:selectOneMenu>
+
+								<p:inputText id="estado" value="#{pessoaBean.endereco.estado}"
+									required="true" requiredMessage="Estado obrigatório"
+									validatorMessage="Estado não pode ser nulo">
+									<p:outputLabel value="Estado" for="estado" />
+									<f:ajax event="blur" render="messages" />
+								</p:inputText>
+								<p:inputText id="cidade" value="#{pessoaBean.endereco.cidade}"
+									required="true" requiredMessage="Cidade obrigatório"
+									validatorMessage="Cidade não pode ser nulo">
+									<p:outputLabel value="Cidade" for="cidade" />
+									<f:ajax event="blur" render="messages" />
+								</p:inputText>
+								<p:inputText id="logradouro"
+									value="#{pessoaBean.endereco.logradouro}" required="true"
+									requiredMessage="Logradouro obrigatório"
+									validatorMessage="Logradouro não pode ser nulo">
+									<p:outputLabel value="Logradouro" for="logradouro" />
+									<f:ajax event="blur" render="messages" />
+								</p:inputText>
+								<p:inputText id="numero" value="#{pessoaBean.endereco.numero}"
+									required="true" requiredMessage="Número obrigatório"
+									validatorMessage="Número não pode ser nulo">
+									<p:outputLabel value="Número" for="numero" />
+									<f:ajax event="blur" render="messages" />
+								</p:inputText>
+								<p:inputMask id="cep" value="#{pessoaBean.endereco.cep}"
+									required="true" requiredMessage="CEP obrigatório"
+									validatorMessage="CEP não pode ser nulo" mask="#{'99999-999'}">
+									<p:outputLabel value="CEP" for="cep" />
+									<f:ajax event="blur" render="messages, panelCadastro"
+										listener="#{pessoaBean.buscarCep(pessoaBean.endereco.cep)}" />
+								</p:inputMask>
+							</p:panelGrid>
+
+							<p:commandButton value="Cadastrar"
+								actionListener="#{pessoaBean.cadastrar}"
+								update="messages, panelCadastro, dataTableDatas" />
+						</div>
+					</h:panelGroup>
+
+
+				</p:fieldset>
+			</h:form>
+
+			<p:fieldset class="">
+				<legend>Cadastro</legend>
+
+				<h:panelGrid id="dataTableDatas" styleClass="painel">
+					<h:dataTable value="#{pessoaBean.pessoas}" var="p">
+						<p:column headerText="#">
+							<f:facet name="header">Id</f:facet>
+							<h:outputText value="#{p.id}" />
+						</p:column>
+						<p:column headerText="Nome">
+							<f:facet name="header">Nome</f:facet>
+							<h:outputText value="#{p.nome}" />
+						</p:column>
+						<p:column headerText="Idade">
+							<f:facet name="header">Idade</f:facet>
+							<h:outputText value="#{p.idade}" />
+						</p:column>
+
+						<p:column headerText="Sexo">
+							<f:facet name="header">Sexo</f:facet>
+							<h:outputText value="#{p.sexo}" />
+						</p:column>
+
+						<p:column headerText="Ação">
+							<f:facet name="header">Ação</f:facet>
+							<h:form>
+								<p:panelGrid columns="2">
+									<p:commandButton value="Editar"
+										oncomplete="PF('dialogWidget').show()" update="modalContent">
+										<f:setPropertyActionListener
+											target="#{pessoaBean.pessoaSelecionada}" value="#{p}" />
+									</p:commandButton>
+
+									<p:commandButton value="Excluir"
+										oncomplete="PF('dlgforExcluir').show()" update="modalExcluir">
+										<f:setPropertyActionListener
+											target="#{pessoaBean.pessoaSelecionada}" value="#{p}" />
+									</p:commandButton>
+								</p:panelGrid>
+							</h:form>
+						</p:column>
+
+					</h:dataTable>
+				</h:panelGrid>
+			</p:fieldset>
+
+			<p:dialog header="Atualizar Pessoa" widgetVar="dialogWidget"
+				resizable="false" id="modalContent" modal="true" dynamic="true">
+				<h:panelGroup>
+					<h:form>
+						<p:panelGrid columns="3">
+							<p:inputText id="nome"
+								value="#{pessoaBean.pessoaSelecionada.nome}" required="true"
+								requiredMessage="Nome obrigatório"
+								validatorMessage="Nome é obrigatório">
+								<p:outputLabel value="Nome" for="nome" />
+								<f:ajax event="blur" render="messages" />
+							</p:inputText>
+							<p:inputText id="idade"
+								value="#{pessoaBean.pessoaSelecionada.idade}" required="true"
+								requiredMessage="Idade obrigatório">
+								<p:outputLabel value="Idade:" for="idade" />
+								<f:validateLength maximum="2" />
+								<f:ajax event="blur" render="messages" />
+							</p:inputText>
+							<p:inputText id="sexo"
+								value="#{pessoaBean.pessoaSelecionada.sexo}" required="true"
+								requiredMessage="Sexo obrigatório"
+								validatorMessage="Sexo obrigatório">
+								<f:validateLength maximum="2" />
+								<p:outputLabel value="Sexo:" for="sexo" />
+								<f:ajax event="blur" render="messages" />
+							</p:inputText>
+
+
+							<p:inputText id="estado"
+								value="#{pessoaBean.pessoaSelecionada.endereco.estado}"
+								required="true" requiredMessage="Estado obrigatório"
+								validatorMessage="Estado não pode ser nulo">
+								<p:outputLabel value="Estado" for="estado" />
+								<f:ajax event="blur" render="messages" />
+							</p:inputText>
+							<p:inputText id="cidade"
+								value="#{pessoaBean.pessoaSelecionada.endereco.cidade}"
+								required="true" requiredMessage="Cidade obrigatório"
+								validatorMessage="Cidade não pode ser nulo">
+								<p:outputLabel value="Cidade" for="cidade" />
+								<f:ajax event="blur" render="messages" />
+							</p:inputText>
+							<p:inputText id="logradouro"
+								value="#{pessoaBean.pessoaSelecionada.endereco.logradouro}"
+								required="true" requiredMessage="Logradouro obrigatório"
+								validatorMessage="Logradouro não pode ser nulo">
+								<p:outputLabel value="Logradouro" for="logradouro" />
+								<f:ajax event="blur" render="messages" />
+							</p:inputText>
+							<p:inputText id="numero"
+								value="#{pessoaBean.pessoaSelecionada.endereco.numero}"
+								required="true" requiredMessage="Número obrigatório"
+								validatorMessage="Número não pode ser nulo">
+								<p:outputLabel value="Número" for="numero" />
+								<f:ajax event="blur" render="messages" />
+							</p:inputText>
+							<p:inputMask id="cep"
+								value="#{pessoaBean.pessoaSelecionada.endereco.cep}"
+								required="true" requiredMessage="CEP obrigatório"
+								validatorMessage="CEP não pode ser nulo" mask="#{'9999-999'}">
+								<p:outputLabel value="CEP" for="cep" />
+								<f:ajax event="blur" render="messages" />
+							</p:inputMask>
+						</p:panelGrid>
+
+						<h:panelGrid columns="2">
+							<p:commandButton value="Atualizar"
+								actionListener="#{pessoaBean.editar}" update="dataTableDatas"
+								onclick="PF('dialogWidget').hide();" />
+							<p:commandButton value="Cancelar"
+								onclick="PF('dlgforEditar').hide();" />
+						</h:panelGrid>
+					</h:form>
+				</h:panelGroup>
+			</p:dialog>
+
+			<p:dialog header="Excluir" widgetVar="dlgforExcluir"
+				resizable="false" id="modalExcluir" modal="true" dynamic="true">
+				<h:form>
+					<h:panelGrid columns="2">
+						<p:commandButton value="Excluir"
+							actionListener="#{pessoaBean.deletar}" update="dataTableDatas"
+							onclick="PF('dlgforEditar').hide();" />
+						<p:commandButton value="Cancelar"
+							onclick="PF('dlgforEditar').hide();" />
+					</h:panelGrid>
+				</h:form>
+			</p:dialog>
+		</ui:define>
+	</ui:composition>
+</ui:composition>

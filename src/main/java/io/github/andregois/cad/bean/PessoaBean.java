@@ -45,9 +45,8 @@ public class PessoaBean implements Serializable{
 	}
 
 	public void cadastrar() {
-		//enderecoRepository.salvar(endereco);
-		enderecoBean.salvar(endereco);
-
+		//enderecoBean.salvar(endereco);
+		System.out.println(pessoa);
 		this.pessoa.setEndereco(endereco);
 		this.repository.salvar(getPessoa());
 		this.pessoa = new Pessoa();

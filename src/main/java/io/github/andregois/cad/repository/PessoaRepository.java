@@ -3,8 +3,8 @@ package io.github.andregois.cad.repository;
 import java.util.List;
 
 import javax.ejb.Stateless;
-import javax.inject.Inject;
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
 import io.github.andregois.cad.model.Pessoa;
@@ -12,7 +12,7 @@ import io.github.andregois.cad.model.Pessoa;
 @Stateless
 public class PessoaRepository {
 
-	@Inject
+	@PersistenceContext
 	private EntityManager em;
 	
 	public List<Pessoa> listAll(){
