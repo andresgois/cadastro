@@ -3,8 +3,8 @@ package io.github.andregois.cad.bean;
 import java.io.Serializable;
 
 import javax.annotation.PostConstruct;
+import javax.ejb.EJB;
 import javax.faces.view.ViewScoped;
-import javax.inject.Inject;
 import javax.inject.Named;
 
 import io.github.andregois.cad.model.Cep;
@@ -18,7 +18,7 @@ public class EnderecoBean implements Serializable{
 
 	private Endereco endereco = null;
 	
-	@Inject
+	@EJB
 	private EnderecoRepository enderecoRepository;
 	
 	@PostConstruct

@@ -26,7 +26,6 @@ public class ViaCepService {
 			HttpResponse response = httpClient.execute(httpGet);
 
 			String responseBody = EntityUtils.toString(response.getEntity());
-			System.out.println(responseBody);
 			cepRequest = CepMapper.mapFromJson(responseBody, Cep.class);
 		} catch (ClientProtocolException e) {
 			e.printStackTrace();

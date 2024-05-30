@@ -3,11 +3,10 @@ package io.github.andregois.cad.util;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
-import javax.faces.convert.FacesConverter;
 
 import io.github.andregois.cad.enuns.SexoEnum;
 
-@FacesConverter("sexoConverter")
+//@FacesConverter("sexoConverter")
 public class SexoConverter implements Converter {
 
     @Override

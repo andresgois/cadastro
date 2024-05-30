@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -16,6 +17,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import io.github.andregois.cad.enuns.SexoEnum;
+import io.github.andregois.cad.util.SexoEnumConverter;
 
 @Entity
 @Table(name = "tb_pessoas")
@@ -28,9 +30,9 @@ public class Pessoa implements Serializable{
 	private Long id;
 	private String nome;
 	private Integer idade;
-	//@Column(length = 1)
-	@Column(name = "sexo")
-	@Enumerated(EnumType.STRING)
+
+	//@Enumerated(EnumType.STRING)
+	@Convert(converter = SexoEnumConverter.class)
 	private SexoEnum sexo;
 	
 	@OneToOne(cascade = CascadeType.ALL)

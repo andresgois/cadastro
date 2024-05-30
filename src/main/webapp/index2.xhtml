@@ -136,7 +136,7 @@
 	                     <f:ajax event="blur" render="messages" />
 	                 </p:inputText>
 	                 
-	                 <p:selectOneMenu value="#{pessoaBean.pessoaSelecionada.sexo}" id="sexo" converter="sexoConverter">
+	                 <p:selectOneMenu value="#{pessoaBean.pessoaSelecionada.sexo}" id="sexo">
 				    	<h:outputText value="Sexo:" id="idSexo"/>
 						<f:selectItem itemLabel="--Selecione--" itemValue="#{pessoaBean.pessoaSelecionada.sexo}" />
 						<f:selectItems value="#{pessoaBean.pessoaSelecionada.sexoEnumValues}" var="sexo" 

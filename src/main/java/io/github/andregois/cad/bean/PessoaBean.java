@@ -18,7 +18,6 @@ import io.github.andregois.cad.service.ViaCepService;
 @Named
 @ViewScoped
 public class PessoaBean implements Serializable{
-
 	
 	private static final long serialVersionUID = 1L;
 	private Pessoa pessoa = null;
@@ -29,8 +28,7 @@ public class PessoaBean implements Serializable{
 	
 	@Inject
 	private PessoaRepository repository;
-	//@Inject
-	//private EnderecoRepository enderecoRepository;
+
 	@Inject
 	private EnderecoBean enderecoBean;
 	
@@ -45,8 +43,6 @@ public class PessoaBean implements Serializable{
 	}
 
 	public void cadastrar() {
-		//enderecoBean.salvar(endereco);
-		System.out.println(pessoa);
 		this.pessoa.setEndereco(endereco);
 		this.repository.salvar(getPessoa());
 		this.pessoa = new Pessoa();
